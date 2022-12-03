@@ -10,23 +10,7 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- task: WhiteSource@21
-  inputs:
-    cwd: '$(System.DefaultWorkingDirectory)'
-    projectName: 'SpringBoot'
-- task: SonarCloudPrepare@1
-  inputs:
-    SonarCloud: 'SonarCloud'
-    organization: 'app-sonar2706'
-    scannerMode: 'CLI'
-    configMode: 'manual'
-    cliProjectKey: 'sonar.springApp'
-    cliProjectName: 'springApp'
-    cliSources: '.'
-    extraProperties: |
-      # Additional properties that will be passed to the scanner, 
-      # Put one key=value per line, example:
-      sonar.exclusions=**/*.java
+
 - task: Maven@3
   inputs:
     mavenPomFile: 'app/pom.xml'
@@ -37,10 +21,7 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
-- task: SonarCloudAnalyze@1
-- task: SonarCloudPublish@1
-  inputs:
-    pollingTimeoutSec: '300'
+
 - task: PublishPipelineArtifact@1
   inputs:
     targetPath: '$(Pipeline.Workspace)'
